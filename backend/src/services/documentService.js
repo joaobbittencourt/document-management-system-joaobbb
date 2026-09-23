@@ -1,6 +1,8 @@
 const crypto = require('node:crypto');
 const fs = require('node:fs/promises');
 
+const documentIdPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 class DocumentService {
   constructor(documentRepository) {
     this.documentRepository = documentRepository;
@@ -41,11 +43,23 @@ class DocumentService {
   }
 
   async getDownload(id) {
+    if (!documentIdPattern.test(id)) {
+      const error = new Error('Identificador de documento inválido.');
+      error.code = 'INVALID_DOCUMENT_ID';
+      throw error;
+    }
+
     const document = this.documentRepository.findById(id);
 
     if (!document) {
       const error = new Error('Documento não encontrado.');
       error.code = 'DOCUMENT_NOT_FOUND';
+      throw error;
+    }
+
+    if (!this.documentRepository.isPathInsideStorage(document.storagePath)) {
+      const error = new Error('Arquivo do documento não encontrado.');
+      error.code = 'FILE_NOT_FOUND';
       throw error;
     }
 
@@ -58,6 +72,14 @@ class DocumentService {
     }
 
     return document;
+  }
+
+  getDownloadName(document) {
+    const name = document.originalName
+      .replace(/[\r\n"]/g, '_')
+      .split(/[\\/]/)
+      .pop();
+    return name || 'document';
   }
 
   toPublicMetadata(document) {

@@ -9,22 +9,26 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  async function loadDocuments() {
+  async function loadDocuments({ signal } = {}) {
     setIsLoading(true);
     setError('');
 
     try {
-      const response = await listDocuments();
+      const response = await listDocuments({ signal });
       setDocuments(response.documents);
     } catch (loadError) {
+      if (loadError.name === 'AbortError') return;
       setError(loadError.message);
     } finally {
-      setIsLoading(false);
+      if (!signal?.aborted) setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    loadDocuments();
+    const controller = new AbortController();
+    loadDocuments({ signal: controller.signal });
+
+    return () => controller.abort();
   }, []);
 
   function handleUploaded(document) {

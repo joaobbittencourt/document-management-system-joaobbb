@@ -20,8 +20,15 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(documentRoutes);
 
-// Endpoint de verificação de saúde. As demais rotas (/upload, /documents,
-// /documents/:id/download) serão implementadas durante o Passo 2.
+app.get('/', (_request, response) => {
+  response.json({
+    name: 'Document Management System',
+    status: 'ok',
+    message: 'API online',
+  });
+});
+
+// Endpoint de verificação de saúde.
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
@@ -37,6 +44,8 @@ app.use((error, _request, response, _next) => {
 
   const statusByCode = {
     FILE_REQUIRED: 400,
+    FILE_TYPE_NOT_ALLOWED: 400,
+    INVALID_DOCUMENT_ID: 400,
     DOCUMENT_NOT_FOUND: 404,
     FILE_NOT_FOUND: 404,
   };

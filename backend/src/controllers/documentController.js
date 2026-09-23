@@ -26,7 +26,21 @@ class DocumentController {
   async download(request, response, next) {
     try {
       const document = await this.documentService.getDownload(request.params.id);
-      response.download(document.storagePath, document.originalName);
+      response.download(
+        document.storagePath,
+        this.documentService.getDownloadName(document),
+        (error) => {
+          if (!error) return;
+
+          if (response.headersSent) {
+            response.end();
+            return;
+          }
+
+          error.code = 'DOWNLOAD_ERROR';
+          next(error);
+        },
+      );
     } catch (error) {
       next(error);
     }

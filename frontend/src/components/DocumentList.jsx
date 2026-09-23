@@ -59,7 +59,9 @@ export default function DocumentList({ documents, isLoading, error, onRetry }) {
                   </td>
                   <td>{formatSize(document.size)}</td>
                   <td>{formatDate(document.uploadedAt)}</td>
-                  <td className="action-cell"><DownloadButton documentId={document.id} /></td>
+                  <td className="action-cell">
+                    <DownloadButton documentId={document.id} fileName={document.originalName} />
+                  </td>
                 </tr>
               ))}
             </tbody>
