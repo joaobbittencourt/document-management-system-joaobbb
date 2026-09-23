@@ -1,20 +1,56 @@
-// Seed do componente raiz do Document Management System.
-//
-// Este é apenas um ponto de partida mínimo. Durante o Passo 3 você vai usar o
-// Agent Mode do GitHub Copilot para construir os componentes:
-//   - components/UploadComponent
-//   - components/DocumentList
-//   - components/DownloadButton
-// e o serviço services/ que consome a API do backend via fetch.
+import { useEffect, useState } from 'react';
+import DocumentList from './components/DocumentList';
+import UploadComponent from './components/UploadComponent';
+import { listDocuments } from './services/api';
+import './styles.css';
 
 export default function App() {
+  const [documents, setDocuments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  async function loadDocuments() {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await listDocuments();
+      setDocuments(response.documents);
+    } catch (loadError) {
+      setError(loadError.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadDocuments();
+  }, []);
+
+  function handleUploaded(document) {
+    setDocuments((currentDocuments) => [document, ...currentDocuments]);
+  }
+
   return (
-    <main style={{ fontFamily: 'system-ui, sans-serif', padding: '2rem' }}>
-      <h1>Document Management System</h1>
-      <p>
-        Seed do frontend. Construa a interface durante o Passo 3 usando o Agent
-        Mode do GitHub Copilot.
-      </p>
+    <main className="app-shell">
+      <header className="app-header">
+        <div>
+          <p className="eyebrow">DMS / Arquivo local</p>
+          <h1>Seu espaço para documentos.</h1>
+          <p className="intro">Envie, organize e recupere seus arquivos em um só lugar.</p>
+        </div>
+        <span className="status-mark" aria-label="Sistema disponível">Online</span>
+      </header>
+
+      <div className="content-stack">
+        <UploadComponent onUploaded={handleUploaded} />
+        <DocumentList
+          documents={documents}
+          isLoading={isLoading}
+          error={error}
+          onRetry={loadDocuments}
+        />
+      </div>
     </main>
   );
 }

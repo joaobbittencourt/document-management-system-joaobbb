@@ -1,0 +1,140 @@
+:root {
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: #1f2b2a;
+  background: #edf2ef;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; min-width: 320px; }
+
+button, input { font: inherit; }
+
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.app-shell {
+  min-height: 100vh;
+  padding: 48px 24px 72px;
+  background: radial-gradient(circle at 90% 0%, #d5e5d8 0, transparent 33%), #edf2ef;
+}
+
+.app-header, .content-stack { width: min(100%, 1040px); margin: 0 auto; }
+
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #47705f;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1, h2, p { margin-top: 0; }
+
+h1 {
+  max-width: 620px;
+  margin-bottom: 12px;
+  color: #18362f;
+  font-family: Georgia, serif;
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  font-weight: 500;
+  line-height: 0.98;
+}
+
+h2 { margin-bottom: 8px; color: #18362f; font-size: 1.35rem; }
+
+.intro, .muted { color: #64746f; }
+.intro { max-width: 480px; margin-bottom: 0; font-size: 1.05rem; }
+.muted { margin-bottom: 0; }
+
+.status-mark {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: 1px solid #b8d2bf;
+  border-radius: 999px;
+  color: #326146;
+  background: #e3f0e5;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.content-stack { display: grid; gap: 20px; }
+
+.upload-panel, .documents-panel {
+  border: 1px solid #d2ded7;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 18px 45px rgba(31, 59, 48, 0.07);
+}
+
+.upload-panel { padding: 28px; }
+.upload-form { display: flex; gap: 12px; margin-top: 24px; }
+
+.file-picker {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border: 1px dashed #91ae9c;
+  border-radius: 6px;
+  color: #51635b;
+  cursor: pointer;
+}
+
+.file-picker span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-picker input { display: none; }
+
+.primary-button, .secondary-button, .download-button {
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.primary-button { padding: 0 20px; color: #fff; background: #245a49; }
+.primary-button:hover, .download-button:hover { background: #174437; transform: translateY(-1px); }
+.primary-button:disabled { cursor: wait; opacity: 0.6; }
+
+.error-message { margin: 14px 0 0; color: #a33c35; font-size: 0.9rem; }
+
+.documents-panel { overflow: hidden; }
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 28px 28px 20px; }
+.document-count { color: #6a7b73; font-size: 0.9rem; }
+.state-message { margin: 0; padding: 24px 28px 30px; color: #697973; }
+.error-state { color: #a33c35; }
+.secondary-button { padding: 9px 14px; color: #245a49; background: #e5efe8; }
+
+.document-table-wrapper { overflow-x: auto; }
+.document-table { width: 100%; border-collapse: collapse; text-align: left; }
+.document-table th { padding: 12px 28px; color: #76857f; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.document-table td { padding: 18px 28px; border-top: 1px solid #e1e9e4; color: #5f7069; font-size: 0.9rem; white-space: nowrap; }
+.document-table td:first-child { min-width: 260px; color: #1f2b2a; white-space: normal; }
+.document-owner { display: block; margin-top: 5px; color: #87958f; font-size: 0.8rem; }
+.action-cell { text-align: right; }
+.download-button { display: inline-block; padding: 9px 14px; color: #fff; background: #245a49; font-size: 0.85rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 640px) {
+  .app-shell { padding: 32px 16px 48px; }
+  .app-header { margin-bottom: 28px; }
+  h1 { font-size: 2.8rem; }
+  .status-mark { display: none; }
+  .upload-panel, .section-heading { padding: 22px; }
+  .upload-form { flex-direction: column; }
+  .primary-button { min-height: 46px; }
+  .document-table th, .document-table td { padding-right: 22px; padding-left: 22px; }
+}
